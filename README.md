@@ -1,3 +1,2 @@
 # MyStash
-Personal Resources
-Personal codes, procedures and functions.
+Personal Resources (codes, procedures and functions).
