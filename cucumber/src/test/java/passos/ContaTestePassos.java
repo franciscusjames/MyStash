@@ -11,46 +11,46 @@ import cucumber.model.Conta;
 
 public class ContaTestePassos {
 	
-//  Observe que na classe ContaTestePassos estamos utilizadas as anotações @Dado, @Quando, @E e @Entao, 
-//	   que correspondem ao mesmo conteúdo e as palavras-chave do Gherkin definidas nos arquivos .feature. 
-//	   Outro ponto a destacar é que em todos os métodos da classe ContaTestePassos definimos algumas 
-//	   expressões regulares, como (\\d+) (extrai valor decimal), \"(.*?)\" (extrai qualquer valor string). 
+//  Observe que na classe ContaTestePassos estamos utilizadas as anotaï¿½ï¿½es @Dado, @Quando, @E e @Entao, 
+//	   que correspondem ao mesmo conteï¿½do e as palavras-chave do Gherkin definidas nos arquivos .feature. 
+//	   Outro ponto a destacar ï¿½ que em todos os mï¿½todos da classe ContaTestePassos definimos algumas 
+//	   expressï¿½es regulares, como (\\d+) (extrai valor decimal), \"(.*?)\" (extrai qualquer valor string). 
 //	   Isso diz ao Cucumber para extrair os valores definidos no arquivo .feature a qual a classe corresponde,
-//	   e em tempo de execução injetar esses valores nos parâmetros de cada método correspondente.
+//	   e em tempo de execuï¿½ï¿½o injetar esses valores nos parï¿½metros de cada mï¿½todo correspondente.
 
-//	Por fim, note que dentro de cada anotação existe no início uma expressão regular “^” e no final “$”: as 
-//	   duas expressões estabelecem o início e fim da leitura do Cucumber em cada linha da especificação.
+//	Por fim, note que dentro de cada anotaï¿½ï¿½o existe no inï¿½cio uma expressï¿½o regular ï¿½^ï¿½ e no final ï¿½$ï¿½: as 
+//	   duas expressï¿½es estabelecem o inï¿½cio e fim da leitura do Cucumber em cada linha da especificaï¿½ï¿½o.
 	
     private Conta conta;
 
     @Dado("^a conta criada para o dono \"(.*?)\" de numero (\\d+) com o limite (\\d+) e saldo (\\d+)$")
     public void a_conta_criada_para_o_dono_de_numero_com_o_limite_e_saldo(String dono, int numero, Double limite,
                  Double saldo) throws Throwable {
-          // Definição de conta
+          // Definiï¿½ï¿½o de conta
           conta = new Conta(dono, numero, limite, saldo);
     }
 
     @Quando("^o dono realiza o deposito no valor de (\\d+) na conta$")
     public void o_dono_realiza_o_deposito_no_valor_de_na_conta(Double valorDeposito) throws Throwable {
-          assertTrue("O dono " + conta.getDono() + " não tem limite disponível na conta para este valor de deposito",
+          assertTrue("O dono " + conta.getDono() + " nï¿½o tem limite disponï¿½vel na conta para este valor de deposito",
                         conta.depositar(valorDeposito));
     }
 
     @E("^o dono realiza o primeiro saque no valor de (\\d+) na conta$")
     public void o_dono_realiza_o_primeiro_saque_no_valor_de_na_conta(Double valorSaque) throws Throwable {
-          assertTrue("O dono " + conta.getDono() + " não tem saldo disponível na conta para este valor de saque",
+          assertTrue("O dono " + conta.getDono() + " nï¿½o tem saldo disponï¿½vel na conta para este valor de saque",
                         conta.sacar(valorSaque));
     }
 
     @E("^o dono realiza o segundo saque no valor de (\\d+) na conta$")
     public void o_dono_realiza_o_segundo_saque_no_valor_de_na_conta(Double valorSaque) throws Throwable {
-          assertTrue("O dono " + conta.getDono() + " não tem saldo disponível na conta para este valor de saque",
+          assertTrue("O dono " + conta.getDono() + " nï¿½o tem saldo disponï¿½vel na conta para este valor de saque",
                         conta.sacar(valorSaque));
     }
 
     @Entao("^o dono tem o saldo no valor de (\\d+) na conta$")
     public void o_dono_tem_o_saldo_na_conta_no_valor_de(Double saldoEsperado) throws Throwable {
-          assertEquals("O dono " + conta.getDono() + " está com o saldo incorreto na conta", saldoEsperado,
+          assertEquals("O dono " + conta.getDono() + " estï¿½ com o saldo incorreto na conta", saldoEsperado,
                         conta.getSaldo());
     }
     

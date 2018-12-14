@@ -11,8 +11,8 @@ import cucumber.model.Conta;
 
 public class BancoTestePassos {
 	  
-//	SERÁ CHAMADA PELO CUCUMBER (MEDIANTE CHAMADA DA CLASSE 'BancoTeste') PARA EXECUTAR OS PASSOS
-//	   (TESTES DE ACEITAÇÃO) DEFINIDOS NO ARQUIVO 'banco.feature'.
+//	SERï¿½ CHAMADA PELO CUCUMBER (MEDIANTE CHAMADA DA CLASSE 'BancoTeste') PARA EXECUTAR OS PASSOS
+//	   (TESTES DE ACEITAï¿½ï¿½O) DEFINIDOS NO ARQUIVO 'banco.feature'.
 	
     private Banco banco;
     private int totalContas;
@@ -20,7 +20,7 @@ public class BancoTestePassos {
 
     @Dado("^que as contas sao do \"(.*?)\"$")
     public void que_as_contas_sao_do(String nome, List<Conta> listaDeContas) throws Throwable {
-          // Definição do banco e associando as contas
+          // Definiï¿½ï¿½o do banco e associando as contas
           banco = new Banco(nome, listaDeContas);
     }
 
@@ -31,7 +31,7 @@ public class BancoTestePassos {
 
     @Entao("^o total de contas e (\\d+)$")
     public void o_total_de_contas_e(int totalContasEsperado) throws Throwable {
-          assertEquals("O cálculo do total de contas está incorreto", 
+          assertEquals("O cï¿½lculo do total de contas estï¿½ incorreto", 
           totalContasEsperado, totalContas);
     }
 
@@ -43,8 +43,8 @@ public class BancoTestePassos {
 
     @Entao("^o total de dinheiro no banco e (\\d+)$")
     public void o_total_de_dinheiro_no_banco_e(Double totalDinheiroEsperado) throws Throwable {
-          assertEquals("O cálculo do total de dinheiro no banco " + banco.getNome() 
-           + " está incorreto",
+          assertEquals("O cï¿½lculo do total de dinheiro no banco " + banco.getNome() 
+           + " estï¿½ incorreto",
            totalDinheiroEsperado, totalDinheiro);
     }
     

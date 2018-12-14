@@ -10,33 +10,33 @@ import cucumber.api.junit.Cucumber;
    glue = "cucumber.teste.passos", monochrome = true, dryRun = false)
 public class ContaTeste {	
 	
-//  ATRAVÉS DO CUCUMBER, IRÁ CHAMAR 'ContaTestePassos.java' PARA PARA EXECUTAR OS TESTES DE ACEITAÇÃO 
+//  ATRAVï¿½S DO CUCUMBER, IRï¿½ CHAMAR 'ContaTestePassos.java' PARA PARA EXECUTAR OS TESTES DE ACEITAï¿½ï¿½O 
 //	   DEFINIDOS NO ARQUIVO 'conta.feature'. 
 	
-//	Observe que na classe ContaTeste.java existe uma anotação chamada @RunWith(Cucumber.class): 
-//	   isso diz ao JUnit que o Cucumber irá assumir o controle da execução dos testes nesta classe. 
-//	   Outra anotação definida na classe é a @CucumberOptions, onde podemos definir parâmetros 
-//     customizáveis utilizados pelo Cucumber na execução dos testes. Veja a seguir uma descrição 
-//	   sobre cada parâmetro desta anotação:
+//	Observe que na classe ContaTeste.java existe uma anotaï¿½ï¿½o chamada @RunWith(Cucumber.class): 
+//	   isso diz ao JUnit que o Cucumber irï¿½ assumir o controle da execuï¿½ï¿½o dos testes nesta classe. 
+//	   Outra anotaï¿½ï¿½o definida na classe ï¿½ a @CucumberOptions, onde podemos definir parï¿½metros 
+//     customizï¿½veis utilizados pelo Cucumber na execuï¿½ï¿½o dos testes. Veja a seguir uma descriï¿½ï¿½o 
+//	   sobre cada parï¿½metro desta anotaï¿½ï¿½o:
 	
-//	Features: É utilizada para ajudar o Cucumber na localização das features (especificação executáveis), 
-//	   que no caso está localizada em uma pasta dentro do projeto chamada “caracteristicas”;
+//	Features: ï¿½ utilizada para ajudar o Cucumber na localizaï¿½ï¿½o das features (especificaï¿½ï¿½o executï¿½veis), 
+//	   que no caso estï¿½ localizada em uma pasta dentro do projeto chamada ï¿½caracteristicasï¿½;
 
-//	Tags: É utilizada para definir as tags neste parâmetro, uma vez uma mesma tag definida neste atributo 
-//	   e no (s) arquivo (s) .feature. Quando o Cucumber executar, esta classe só executará em conjunto 
+//	Tags: ï¿½ utilizada para definir as tags neste parï¿½metro, uma vez uma mesma tag definida neste atributo 
+//	   e no (s) arquivo (s) .feature. Quando o Cucumber executar, esta classe sï¿½ executarï¿½ em conjunto 
 //	   apenas os arquivos .feature marcados com a mesma tag;
 
-//	Glue: É utilizada para ajudar o Cucumber na localização das classes que contém os passos para os 
-//	   testes de aceitação, que no caso estão localizadas no pacote cucumber.teste.passos;
+//	Glue: ï¿½ utilizada para ajudar o Cucumber na localizaï¿½ï¿½o das classes que contï¿½m os passos para os 
+//	   testes de aceitaï¿½ï¿½o, que no caso estï¿½o localizadas no pacote cucumber.teste.passos;
 
-//	Monochrome: É utilizado para definir a formatação do resultado dos testes na saída da console. 
-//	   Se marcado como ”true”, o resultado dos testes sai na forma legível, mas se “false”, não sai tão 
-//	   legível;
+//	Monochrome: ï¿½ utilizado para definir a formataï¿½ï¿½o do resultado dos testes na saï¿½da da console. 
+//	   Se marcado como ï¿½trueï¿½, o resultado dos testes sai na forma legï¿½vel, mas se ï¿½falseï¿½, nï¿½o sai tï¿½o 
+//	   legï¿½vel;
 
-//	DryRun: esta opção pode ser definida como “true” ou “false“. Se estiver marcado como “true”, isso 
-//	   significa que o Cucumber só verifica se cada etapa definida no arquivo .feature tem código 
-//	   correspondente. Considerando ainda “true”, se na execução de um arquivo .feature o Cucumber não 
-//     achar nenhum código (Java) correspondente a esse arquivo, então o Cucumber gera o código 
-//	   correspondente. Se marcado como “false”, o Cucumber não faz essa verificação.
+//	DryRun: esta opï¿½ï¿½o pode ser definida como ï¿½trueï¿½ ou ï¿½falseï¿½. Se estiver marcado como ï¿½trueï¿½, isso 
+//	   significa que o Cucumber sï¿½ verifica se cada etapa definida no arquivo .feature tem cï¿½digo 
+//	   correspondente. Considerando ainda ï¿½trueï¿½, se na execuï¿½ï¿½o de um arquivo .feature o Cucumber nï¿½o 
+//     achar nenhum cï¿½digo (Java) correspondente a esse arquivo, entï¿½o o Cucumber gera o cï¿½digo 
+//	   correspondente. Se marcado como ï¿½falseï¿½, o Cucumber nï¿½o faz essa verificaï¿½ï¿½o.
 
 }
