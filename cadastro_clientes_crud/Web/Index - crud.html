@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="crudApp" >
+
+<!---- IMPORT DE ARQUIVOS ------>
+<head>
+	<!-- <meta charset="utf-8"> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
+    <!-- Include jQuery -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"/>
+	<!-- Include AngularJS -->
+	<script src="js/lib/angular.min.js"></script>
+	<!-- Include CHECK CPF_CNPJ -->
+	<script src="js/lib/cpf_cnpj.js"></script>	
+	<script src="js/lib/ngCpfCnpj.js"></script>	
+    <!-- Include main e controller -->
+	<script src="js/main.js"></script>
+	<script src="js/controllers/cliente-controller.js"></script>
+
+    <title>CRUD Clientes</title>
+</head>
+<!-- IMPORT DE ARQUIVOS - FIM -->
+
+<body ng-controller="ClienteController" ng-init="pesquisarAll()" class="card-panel green lighten-5">
+
+<!---- MENU PRINCIPAL ------>
+<div ng-init="menu=true" ng-show="menu">	
+	<h3 align=center>MENU CLIENTES</h3>
+	<br>
+
+	<!-- lista de botões / opções -->
+	<ul align=center>
+		<a ng-click="abaMenu()" class="waves-effect waves-light btn"><i class="material-icons left">home</i>Home</a>
+
+		<a ng-click="abaCadastro()" class="waves-effect waves-light btn"><i class="material-icons left">add_circle_outline</i>Novo cadastro</a>
+
+		<a ng-click="abaConsulta()" class="waves-effect waves-light btn"><i class="material-icons left">adjust</i>Consultar</a>
+
+		<a ng-click="abaAltera()" class="waves-effect waves-light btn"><i class="material-icons left">edit</i>Alterar</a>
+
+		<a ng-click="abaExclui()" class="waves-effect waves-light btn"><i class="material-icons left">delete</i>Excluir</a>
+	</ul>
+	<br>
+
+	<!-- lista de clientes pre-selecionados -->
+	<table ng-init="tabela=true" ng-show="tabela" class="container">
+		<thead>
+		<tr>
+			<th> ObjRef </th>
+			<th> Nome </th>
+			<th> CNPJ/CPF </th> 
+			<th> Insc.Estadual </th>
+			<th> Telefone </th>
+			<th> Contato </th>
+			<th> Código Município </th>
+			<th> Situação </th>
+			<th> Captação </th>
+			<th> CEP </th>
+			<th> Nvocc </th>
+			<th> Email </th>
+		</tr>
+		</thead>
+		<tbody ng-repeat="item in retorno">
+			<td> <span th:number="item.objref"> {{item.objref}} </span> </td>
+			<td> <span th:text="item.nome"> {{item.nome}} </span> </td>
+			<td> <span th:text="item.cnpj"> {{item.cnpj}} </span> </td>
+			<td> <span th:text="item.inscrestadual"> {{item.inscrestadual}} </span> </td>
+			<td> <span th:text="item.telefone"> {{item.telefone}} </span> </td>
+			<td> <span th:text="item.contato"> {{item.contato}} </span> </td>
+			<td> <span th:text="item.objref_municipio"> {{item.objref_municipio}} </span> </td>
+			<td> <span th:text="item.situacao"> {{item.situacao}} </span> </td>
+			<td> <span th:text="item.captacao"> {{item.captacao}} </span> </td>
+			<td> <span th:text="item.cep"> {{item.cep}} </span> </td>
+			<td> <span th:text="item.referenciawmsnvocc"> {{item.referenciawmsnvocc}} </span> </td>
+			<td> <span th:text="item.email"> {{item.email}} </span> </td>
+			<td> <a class="waves-effect waves-light btn-small" ng-click="mainUpd(item)"> <i class="material-icons left">edit </i> </a> </td>
+			<td> <a class="waves-effect waves-light btn-small" ng-click="mainDel(item)"> <i class="material-icons left">delete </i> </a> </td>	
+		</tr>
+		</tbody>
+	</table>
+</div>	
+<!-- MENU PRINCIPAL - FIM -->
+<!-------------------------->
+
+<!----- formulário de CADASTRO -----> 
+<div ng-init="cadastro=false" ng-show="cadastro" class="container">
+	<h4 align=center>Cadastro de Cliente</h4>
+	<!--botão limpar--> 
+	<div align="right" class="container">
+		<button ng-click="limpar(cliente)" class="btn waves-effect waves-light">Limpar<i class="material-icons right">clear_all</i></button>
+	</div> 
+	<!-- formulário -->
+	<form name="form1" class=container method="post">
+		<div class='row'>
+			<div class='input-field col s3'>
+				ObjRef: <input type="number" required ng-model="cliente.objref" name="objref"/>
+			</div>
+		</div>
+			<div class='row'>
+				<div class="input-field col s12">
+					Nome: <input type="text" required ng-model="cliente.nome" name="nome"/>
+				</div>
+			</div>
+			<div class='row'>
+				<div class="input-field col s6">
+					CNPJ/CPF: <input ng-cpf-cnpj ng-model="cliente.cnpj" onblur="if(!CNPJ.isValid(this.value)&&(!CPF.isValid(this.value))){alert('CNPJ/CPF invalido!')}" name="cnpj"/>
+				<!--	CNPJ/CPF: <input  ng-model="cliente.cnpj" ng-cpf-cnpj name="cnpj"/> {{(form1.cnpj.$valid) ? "" : (form1.$invalid)}}  -->
+				</div>
+				<div class='input-field col s6'>
+					Insc.Estadual: <input type="text" ng-model="cliente.inscrestadual" name="inscrestadual"/>
+				</div>
+			</div>
+			<div class='row'>
+				<div class="input-field col s6">
+					Telefone: <input type="text" ng-model="cliente.telefone" name="telefone"/>
+				</div>
+				<div class='input-field col s6'>
+					Contato: <input type="text" ng-model="cliente.contato" name="contato"/>
+				</div>
+			</div>
+			<div class='row'>
+				<div class="input-field col s3">
+					Codigo Município: <input type="number" ng-model="cliente.objref_municipio" name="objref_municipio"/>
+				</div>
+				<div class='input-field col s7'>
+					Município: <input readonly="true" ng-model="municipio.nome" name="municipio"/>
+				</div>
+				<div class='input-field col s1'>
+					<button ng-click="getMunicipio(cliente)" class="btn waves-effect waves-light" type="get" name="action">Buscar</button>
+				</div>	
+			</div>
+			<div class='row'>
+				<div class="input-field col s3">
+					Situação: <input ng-model="aux.situacao" ng-blur="chkDatalist(aux)" list="situacoes" name="situacao"/>
+					<datalist id="situacoes">
+    					<option value="Ativo"/>
+    					<option value="Inativo"/>
+  					</datalist>
+				</div>
+				<div class='input-field col s3'>
+					Captação: <input ng-model="aux.captacao" ng-blur="chkDatalist(aux)" list="captacoes" name="captacao"/>
+					<datalist id="captacoes">
+    					<option value="Sim"/>
+    					<option value="Não"/>
+  					</datalist>
+				</div>
+			</div>
+			<div class='row'>
+				<div class="input-field col s3">
+					CEP: <input type="text" ng-model="cliente.cep" name="cep"/>
+				</div>
+			</div>
+			<fieldset>
+				<legend> Ligação com Nvocc </legend>
+			<div class='row'>
+				<div class="input-field col s3">
+					Nvocc: <input type="number" ng-model="cliente.referenciawmsnvocc" name="referenciawmsnvocc"/>
+				</div>
+				<div class='input-field col s7'>
+					Referência: <input readonly="true" ng-model="nvocc.nome" name="nvocc"/>
+				</div>
+				<div class='input-field col s1'>
+					<button ng-click="getNvocc(cliente)" class="btn waves-effect waves-light" type="get" name="action">Buscar</button> 
+				</div>
+			</div>
+			</fieldset>	 <br>
+			<fieldset>
+				<!-- lista de emails cadastrados -->
+				<legend> E-mails Autorizados NVOCC </legend>
+				<div class='row' ng-repeat="itemEmail in emails">
+					<div class="input-field col s5">
+						E-mail: <input readonly type="text" ng-model="itemEmail.email" name="item.email"/>
+					</div>
+					<div class='input-field col s5'>
+						Nome: <input readonly type="text" ng-model="itemEmail.nome" name="item.nome"/>
+					</div>
+					<div class='input-field col s1'> 
+						<a class="waves-effect waves-light btn-small" ng-click="apagaEmail(itemEmail)"> <i class="material-icons left">delete </i> </a>
+					</div> 
+				</div>
+				<!-- campo de inclusão de novo email -->
+				<fieldset>
+				<div class='row'>
+					<div class="input-field col s5">
+						E-mail: <input type="text" ng-model="itemEmail.email" ngblur="" name="email"/>
+					</div>
+					<div class='input-field col s5'>
+						Nome: <input type="text" ng-model="itemEmail.nome" name="emailNome"/>
+					</div>
+				</div>
+				<div class='row' align=center>
+					<div class="input-field col s6">
+						<button class="btn waves-effect waves-light" type="post" ng-click="postEmail(itemEmail)">Adicionar email</button>
+					</div>	
+				</div>
+				</fieldset>
+			</fieldset>	 <br>
+		<button ng-disabled="form1.$invalid" ng-click="cadastrar(cliente)" class="btn waves-effect waves-light">Cadastrar<i class="material-icons right">send</i></button> 
+		<br><br>
+	</form>
+</div>	
+<!-- formulário de CADASTRO - FIM -->
+<!---------------------------------->
+
+<!---- formulário de CONSULTA / EXCLUSÃO ---->
+<div ng-init="consulta=false" ng-show="consulta" class="container">
+	<h4 align=center>{{nomeAba}} Registro</h4>	
+	<!--botão limpar--> 
+	<div align="right" class="container">
+		<button ng-click="limpar(cliente)" class="btn waves-effect waves-light">Limpar<i class="material-icons right">clear_all</i></button>
+	</div> 
+	<!--campo de consulta--> 
+	<form class="container" method="get">
+		<div class='row'>
+			<div class='input-field col s3'>
+				ObjRef: <input type="number" ng-model="cliente.objref" id="ObjRef"/>
+				<button ng-click="pesquisarObjref(cliente)" class="btn waves-effect waves-light">Pesquisar<i class="material-icons right"></i></button>
+			</div>
+		</div> 
+	</form>
+	<!--tabela para exibir cliente-->
+	<form class="container" method="get">
+	<div id="info"> <!-- id para consultar, alterar e excluir -->
+		<div class='row'>
+			<div class="input-field col s12">
+				Nome: <input type="text" readonly="true" ng-model="cliente.nome" name="nome"/>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="input-field col s6">
+				CNPJ/CPF: <input type="text" readonly="true" ng-model="cliente.cnpj" name="cnpj"/> 
+			</div>
+			<div class='input-field col s6'>
+				Insc.Estadual: <input type="text" readonly="true" ng-model="cliente.inscrestadual" name="inscrestadual"/>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="input-field col s6">
+				Telefone: <input type="text" readonly="true" ng-model="cliente.telefone" name="telefone"/>
+			</div>
+			<div class='input-field col s6'>
+				Contato: <input type="text" readonly="true" ng-model="cliente.contato" name="contato"/>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="input-field col s3">
+				Codigo Municipio: <input type="number" readonly="true" ng-model="cliente.objref_municipio" name="objref_municipio"/>
+			</div>
+			<div class='input-field col s9'>
+				Municipio: <input type="text" readonly="true" name="municipio" ng-model="municipio.nome"/>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="input-field col s3">
+				Situação: <input type="text" readonly="true" ng-model="aux.situacao" name="situacao"/>
+			</div>
+			<div class='input-field col s3'>
+				Captação: <input type="text" readonly="true" ng-model="aux.captacao" name="captacao"/>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="input-field col s3">
+				CEP: <input type="text" readonly="true" ng-model="cliente.cep" name="cep"/>
+			</div>
+		</div>
+	<fieldset>
+		<legend> Ligação com Nvocc </legend>
+		<div class='row'>
+			<div class="input-field col s3">
+				Nvocc: <input type="number" readonly="true" ng-model="cliente.referenciawmsnvocc" name="referenciawmsnvocc"/>
+			</div>
+			<div class='input-field col s9'>
+				Referência: <input type="text" readonly="true" ng-model="nvocc.nome" name="referenciawmscliente"/>
+			</div>
+		</div>
+	</fieldset> <br>
+	<fieldset>
+		<legend> E-mails Autorizados NVOCC </legend>
+		<div class='row' ng-repeat="itemEmail in emails">
+			<div class="input-field col s6">
+				E-mail: <input type="text" readonly ng-model="itemEmail.email" name="email"/>
+			</div>
+			<div class='input-field col s6'>
+				Nome: <input type="text" readonly ng-model="itemEmail.nome" name="nome"/>
+			</div>
+		</div>
+	</fieldset> <br>
+	<div ng-init="exclui=false" ng-show="exclui">
+		<button ng-click="excluir(cliente)" class="btn waves-effect waves-light" type="delete" name="action">Excluir<i class="material-icons right">delete</i></button>
+	</div> <br>
+	</div>	
+	</form>	
+</div>	
+<!-- formulário de CONSULTA/EXCLUSÃO - FIM -->
+<!------------------------------------------->
+
+<!----- formulário de ALTERAÇÃO ----->
+<div ng-init="altera=false" ng-show="altera" class="container">
+	<h4 align=center>Alterar Registro</h4>	
+	<!--botão limpar--> 
+	<div align="right" class="container">
+		<button ng-click="limpar(cliente)" class="btn waves-effect waves-light">Limpar<i class="material-icons right">clear_all</i></button>
+	</div> 
+	<!--campo de consulta--> 
+	<form class="container" method="get">
+		<div class='row'>
+			<div class='input-field col s3'>
+				ObjRef: <input required type="number" id="ObjRef2" ng-model="cliente.objref" />
+				<button ng-click="pesquisarObjref(cliente)" class="btn waves-effect waves-light">Pesquisar<i class="material-icons right"></i></button>
+			</div>
+		</div> 
+	</form>
+	<!--tabela para exibir cliente-->
+	<form name="form3" class="container" method="get">
+	<div id="info"> <!-- id para consultar, alterar e excluir -->
+		<div class='row'>
+			<div class="input-field col s12">
+				Nome: <input type="text" required ng-model="cliente.nome" name="nome"/>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="input-field col s6">
+				CNPJ/CPF: <input type="text" readonly="true" ng-cpf-cnpj ng-model="cliente.cnpj" name="cnpj"/> 
+			</div>
+			<div class='input-field col s6'>
+				Insc.Estadual: <input type="text" ng-model="cliente.inscrestadual" name="inscrestadual"/>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="input-field col s6">
+				Telefone: <input type="text" ng-model="cliente.telefone" name="telefone"/>
+			</div>
+			<div class='input-field col s6'>
+				Contato: <input type="text" ng-model="cliente.contato" name="contato"/>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="input-field col s3">
+				Codigo Município: <input type="number" ng-model="cliente.objref_municipio" name="objref_municipio"/>
+			</div>
+			<div class='input-field col s7'>
+				Município: <input type="text" readonly="true" ng-model="municipio.nome" name="municipio"/>
+			</div>
+			<div class='input-field col s1'>
+				<button ng-click="getMunicipio(cliente)" class="btn waves-effect waves-light" type="get" name="action">Buscar</button> 
+			</div>
+		</div>
+		<div class='row'>
+				<div class="input-field col s3">
+					Situação: <input list="situacoes" ng-model="aux.situacao" ng-blur="chkDatalist(aux)" name="situacao"/>
+					<datalist id="situacoes">
+    					<option value="Ativo"/>
+    					<option value="Inativo"/>
+  					</datalist>
+				</div>
+				<div class='input-field col s3'>
+					Captação: <input list="captacoes" ng-model="aux.captacao" ng-blur="chkDatalist(aux)" name="captacao"/>
+					<datalist id="captacoes">
+    					<option value="Sim"/>
+    					<option value="Não"/>
+  					</datalist>
+				</div>
+			</div>
+		<div class='row'>
+			<div class="input-field col s3">
+				CEP: <input type="text" ng-model="cliente.cep" name="cep"/>
+			</div>
+		</div>
+	<fieldset>
+		<legend> Ligação com Nvocc </legend>
+		<div class='row'>
+			<div class="input-field col s3">
+				Nvocc: <input type="number" ng-model="cliente.referenciawmsnvocc" name="referenciawmsnvocc"/>
+			</div>
+			<div class='input-field col s7'>
+				Referência: <input type="text" readonly="true" ng-model="nvocc.nome" name="nvocc"/>
+			</div>
+			<div class='input-field col s1'>
+				<button ng-click="getNvocc(cliente)" class="btn waves-effect waves-light" type="get" name="action">Buscar</button> 
+			</div>	
+		</div>
+	</fieldset> <br>
+	<fieldset>
+		<!-- lista de emails cadastrados -->
+		<legend> E-mails Autorizados NVOCC </legend>
+		<div class='row' ng-repeat="itemEmail in emails">
+			<div class="input-field col s5">
+				E-mail: <input readonly type="text" ng-model="itemEmail.email" name="email"/>
+			</div>
+			<div class='input-field col s5'>
+				Nome: <input readonly type="text" ng-model="itemEmail.nome" name="emailNome"/>
+			</div>
+			<div class='input-field col s1'> 
+				<a class="waves-effect waves-light btn-small" ng-click="apagaEmail(itemEmail)"> <i class="material-icons left">delete </i> </a>
+			</div> 
+		</div>
+		<!-- campo de inclusão de novo email -->
+		<fieldset>
+		<div class='row'>
+			<div class="input-field col s5">
+				E-mail: <input type="text" ng-model="itemEmail.email" name="email"/>
+			</div>
+			<div class='input-field col s5'>
+				Nome: <input type="text" ng-model="itemEmail.nome" name="emailNome"/>
+			</div>
+		</div>
+		<div class='row' align=center>
+			<div class="input-field col s6">
+				<button class="btn waves-effect waves-light" type="post" ng-click="postEmail(itemEmail)">Adicionar email</button> 
+			</div>	
+		</div>
+		</fieldset>
+	</fieldset>  <br>
+		<button ng-disabled="form3.$invalid" ng-click="alterar(cliente)"  class="btn waves-effect waves-light">Alterar<i class="material-icons right">send</i></button> 
+		<br><br>
+	</div>	
+	</form>	
+</div>	
+<!-- formulário de ALTERAÇÃO - FIM -->
+<!----------------------------------->
+
+</body>
+</html>
